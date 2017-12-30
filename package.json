@@ -1,0 +1,32 @@
+{
+  "name": "webcore-discourse-theme",
+  "version": "0.0.1",
+  "description": "The theme for the webCoRE Community, a forum powered by Discourse",
+  "config": {
+    "hbs": "hbs --partial templates/partials/**/*.hbs"
+  },
+  "scripts": {
+    "build": "run-s build:*",
+    "build:templates": "run-p build:templates:*",
+    "build:templates:common": "$npm_package_config_hbs -o common templates/common/*.hbs",
+    "build:templates:desktop": "$npm_package_config_hbs -o desktop templates/desktop/*.hbs",
+    "build:templates:mobile": "$npm_package_config_hbs -o mobile templates/mobile/*.hbs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webCoRE-Mechanics/webCoRE-discourse-theme.git"
+  },
+  "author": "Ian Paterson <ian@ipaterson.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/webCoRE-Mechanics/webCoRE-discourse-theme/issues"
+  },
+  "homepage": "https://community.webcore.co/",
+  "private": true,
+  "devDependencies": {
+    "handlebars": "^4.0.11",
+    "hbs-cli": "^1.1.1",
+    "npm-run-all": "^4.1.2",
+    "rimraf": "^2.6.2"
+  }
+}
