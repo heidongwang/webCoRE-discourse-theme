@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 Ian Paterson <ian@ipaterson.com>
@@ -17,18 +17,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Calculate perceived lightness of a color
-@function luma($color) {
-	@return 0.299 * red($color) + 0.587 * green($color) + 0.114 * blue($color);
-}
+// Discourse color scheme
+@import "theme_variables";
 
-// Choose between two colors based on the luma of a
-// third (usually a background color)
-@function contrast-switch(
-	$color,
-	$if-dark: #fff,
-	$if-light: #000,
-	$threshold: 130
-) {
-	@return if(luma($color) < $threshold, $if-dark, $if-light);
-}
+@import "functions";
