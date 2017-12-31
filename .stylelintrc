@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-scss"
+   ],
+  "rules": {
+    "indentation": "tab",
+    "at-rule-empty-line-before": null,
+    "at-rule-no-unknown": null,
+    "function-max-empty-lines": 1,
+    "scss/at-rule-no-unknown": true,
+    "value-list-max-empty-lines": 1
+  }
+}
