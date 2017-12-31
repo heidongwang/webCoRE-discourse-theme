@@ -1,0 +1,14 @@
+# Browsers that we support
+# See https://github.com/ai/browserslist for syntax
+
+# Discourse browser requirements https://www.discourse.org/about
+Chrome >= 32
+Firefox >= 27
+Safari >= 6.1
+Explorer >= 11
+Edge >= 12
+iOS >= 8
+ChromeAndroid >= 30
+
+# Remaining popular browsers
+> 1%

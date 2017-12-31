@@ -1,3 +1,5 @@
+
+@import "theme_variables";
 /*
  * webCoRE Discourse theme
  *
@@ -16,9 +18,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-@import "../stylesheets/functions";
-
+/* Discourse color scheme*/
+/* Calculate perceived lightness of a color*/
+@function luma($color) {
+	@return 0.299 * red($color) + 0.587 * green($color) + 0.114 * blue($color);
+}
+/* Choose between two colors based on the luma of a*/
+/* third (usually a background color)*/
+@function contrast-switch(
+	$color,
+	$if-dark: #fff,
+	$if-light: #000,
+	$threshold: 130
+) {
+	@return if(luma($color) < $threshold, $if-dark, $if-light);
+}
 body {
 	color: contrast-switch(blue);
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex: 0 1;
+	        flex: 0 1;
 }
