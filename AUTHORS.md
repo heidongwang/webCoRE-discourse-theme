@@ -1,4 +1,4 @@
-# webCoRE Discourse theme authors
+# Authors
 
 This is the official list of webCoRE Discourse theme authors for copyright purposes.
 
