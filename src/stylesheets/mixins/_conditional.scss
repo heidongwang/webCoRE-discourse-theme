@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 by its authors; see AUTHORS.md or
@@ -18,5 +18,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "badges";
-@import "conditionals";
+// Allow elements to be shown or hidden based on whether an
+// ancestor element exists
+@mixin conditional($name, $ancestor: '.' + $name) {
+	#{$ancestor} .unless-#{$name} {
+		display: none;
+	}
+
+	#{$ancestor} {
+		.if-#{$name} {
+			display: block;
+		}
+
+		.if-#{$name}-i {
+			display: inline;
+		}
+
+		.if-#{$name}-ib {
+			display: inline-block;
+		}
+	}
+
+	.if-#{$name},
+	.if-#{$name}-i,
+	.if-#{$name}-ib {
+		display: none;
+	}
+}

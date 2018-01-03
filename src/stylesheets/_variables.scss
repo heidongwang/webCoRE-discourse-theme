@@ -22,3 +22,135 @@
 @import "theme_variables";
 
 @import "functions";
+
+// Reasonably semantic names for the current Discourse
+// color scheme colors
+$discourse-text-color: $primary;
+$discourse-bg-color: $secondary;
+$discourse-link-color: $tertiary;
+$discourse-navigation-color: $quaternary;
+$discourse-highlight-color: $highlight;
+$discourse-is-dark: luma($discourse-bg-color) < 130;
+
+// SmartThings brand/site colors
+$smartthings-primary: #15bfff;
+$smartthings-teal: #09a;
+$smartthings-violet: #3e0d86;
+
+// Google webfont with a few weights loaded in <head>
+$header-font-family: 'Saira Semi Condensed', sans-serif;
+
+// SMS-style conversation
+$conversation: (
+	them: (
+		background-color: mix(#eee, $smartthings-primary, 98%),
+		color: #333,
+	),
+	us: (
+		background-color: saturate(darken($smartthings-primary, 8%), 25%),
+		color: white,
+
+		link: (
+			color: mix(white, $smartthings-primary, 90%),
+
+			hover: (
+				color: mix(white, $smartthings-primary, 90%),
+			),
+		),
+	),
+);
+
+// Large square links
+$color: contrast-switch($discourse-bg-color, $discourse-navigation-color, $smartthings-violet);
+$tile: (
+	border-color: rgba(white, 0.05),
+	border-bottom-color: $color,
+	background-color: mix(contrast-switch($discourse-bg-color, lighten($discourse-bg-color, 3%), white), $color, 99%),
+	color: $discourse-text-color,
+
+	icon: (
+		fill: $color,
+	),
+
+	hover: (
+		background-color: $smartthings-violet,
+		border-color: $smartthings-violet,
+		color: white,
+
+		icon: (
+			fill: white,
+		),
+	),
+);
+
+// Full-width bars
+$ribbon: (
+	dark: (
+		background-color: mix(#222, $smartthings-primary, 95%),
+		color: white,
+	),
+	tiles: (
+		background-color: mix(contrast-switch($discourse-bg-color, $discourse-bg-color, #f5f5f5), map-get($tile, border-color), 97%),
+		color: contrast-switch($discourse-bg-color, $discourse-text-color, $smartthings-violet),
+	),
+	quick-links: (
+		background-color: $smartthings-violet,
+		color: white,
+	),
+);
+
+// Quick navigation buttons
+$color: $smartthings-primary;
+$quick-link: (
+	border-color: rgba(white, 0.05),
+	border-bottom-color: $color,
+	background-color: lighten(map-get(map-get($ribbon, dark), background-color), 15%),
+	color: white,
+
+	hover: (
+		border-color: $color,
+		background-color: $color,
+		color: black,
+	),
+);
+
+// Forum styling
+$whisper: (
+	background-color: mix($discourse-bg-color, $discourse-highlight-color, 90%),
+);
+$color: mix($discourse-bg-color, $discourse-highlight-color, 45%);
+$whisper-button: (
+	background-color: $color,
+	color: contrast-switch($color, white, black),
+);
+
+// Autolinked keywords in topics and replies
+$color: $discourse-text-color;
+$keyword-link: (
+	border-bottom-style: dotted,
+	border-bottom-color: rgba($color, 0.5),
+	color: $color,
+
+	hover: (
+		border-bottom-color: $color,
+		color: $color,
+	),
+);
+
+$breakpoints: (
+	conversations-above-greeting: 960px,
+	quick-links-two-lines: 600px,
+	badges-below-username: 570px,
+);
+
+// Discourse theme upload variables do not work with child themes
+$logotype-image: contrast-switch(
+	$discourse-bg-color,
+	$if-dark: 'https://community.webcore.co/uploads/default/original/2X/2/2382a051335d7fb65d7843e0f8d3edac0d427d96.svg',
+	$if-light: 'https://community.webcore.co/uploads/default/original/2X/d/d82aa5d0f719318d1f35bafdec06e2c8cf3c54be.svg'
+);
+$logomark-image: contrast-switch(
+	$discourse-bg-color,
+	$if-dark: 'https://community.webcore.co/uploads/default/original/2X/7/7b957d3bc7df5200d1e7a7b1f247155fa3d8fd65.svg',
+	$if-light: 'https://community.webcore.co/uploads/default/original/2X/9/9ab0be1e34db8380a430a655173c215d31698caa.svg'
+);

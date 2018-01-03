@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 by its authors; see AUTHORS.md or
@@ -18,5 +18,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "badges";
-@import "conditionals";
+@import "mixins/conditional";
+
+// Show/hide content based on page navigation
+@include conditional(homepage, '.wc-homepage');
+@include conditional(categories, '.navigation-categories');
+@include conditional(topics, '.navigation-topics');
+@include conditional(topic, 'body[class*=archetype]');
+
+// Mobile or desktop
+@include conditional(desktop, '.desktop-view');
+@include conditional(mobile, '.mobile-view');
+
+// Messages that can be hidden
+@include conditional(hide-homepage);
+@include conditional(hide-donate);

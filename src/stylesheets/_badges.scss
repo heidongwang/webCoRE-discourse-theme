@@ -1,0 +1,108 @@
+/*!
+ * webCoRE Discourse theme
+ *
+ * Copyright 2017 by its authors; see AUTHORS.md or
+ * https://github.com/webCoRE-Mechanics/webCoRE-discourse-theme/blob/master/AUTHORS.md
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@import "variables";
+@import "mixins/badge";
+
+// Username line badge styling; keys do not need to match a user group name and
+// must be explicitly mapped to one or more groups below
+$badges: (
+	verification-warning: (
+		background-color: #f00,
+		content: "WARNING - No Response to Verification Requests!!!",
+	),
+	awaiting-verification: (
+		background-color: #f90,
+		content: "ST Username Awaiting Verification",
+	),
+	minion: (
+		background-color: rgba(contrast-switch($discourse-bg-color, white, #fed55d), 0.2),
+		background-image: url(contrast-switch($discourse-bg-color, 'https://community.webcore.co/uploads/default/original/2X/1/175d366e3b193d3118e6be0d3a6f2f1fa1119486.png', 'https://community.webcore.co/uploads/default/original/2X/a/a421889247679462c500b76a0047bda38866be47.png')),
+		background-position: center,
+		background-repeat: no-repeat,
+		background-size: contain,
+		content: " ",
+		width: 104px,
+		height: 24px,
+		vertical-align: middle,
+	),
+	new-user: (
+		background-color: #f00,
+		content: "User Verification Not Started",
+	),
+	st-staff: (
+		background-color: #00a0dc,
+		content: "SmartThings Staff",
+	),
+);
+
+.topic-post {
+	// Defaults for post-username badge
+	.username::after {
+		display: none;
+		color: white;
+		border-radius: 4px;
+		margin-left: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+		font-family: Helvetica, sans-serif;
+		font-weight: 100;
+		font-size: 14px;
+		position: relative;
+		top: 4%;
+	}
+
+	// Group badges
+	.username {
+		&.Pending_ST_Confirm,
+		&.Verification_PM,
+		&.Verification_PM2 {
+			@include badge(awaiting-verification);
+		}
+
+		&.Veri_No_Response,
+		&[class*=Veri_Email] {
+			@include badge(verification-warning);
+		}
+
+		&.ST_Staff {
+			@include badge(st-staff);
+		}
+
+		&.webCoRE_Minions {
+			@include badge(minion);
+		}
+	}
+	// Pre-verification badge for brand new users who have no group
+	&:not([class*=group]) .username {
+		@include badge(new-user);
+	}
+
+	.names span {
+		padding-right: 4px;
+	}
+
+	// When a new post is added it is not yet associated with the correct groups
+	// so badges should be hidden. The post is "staged" for a brief moment until
+	// the server responds.
+	&.staged .username::after {
+		display: none !important;
+	}
+}

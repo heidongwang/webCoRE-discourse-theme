@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 by its authors; see AUTHORS.md or
@@ -18,5 +18,29 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "badges";
-@import "conditionals";
+@mixin badge($group, $badges: $badges) {
+	$badge: map-get($badges, $group);
+	$content: map-get($badge, content);
+
+	// .username has a max-width applied that should be removed for long badge text
+	@if str-length($content) > 20 {
+		max-width: none;
+	}
+
+	&::after {
+		@include apply($badge);
+
+		display: inline-block;
+
+		// Reduced font size for long badges
+		@if str-length($content) > 20 {
+			font-size: 13px;
+		}
+
+		// Badges on their own line for small screens
+		@media screen and (max-width: map-get($breakpoints, badges-below-username)) {
+			display: table-cell;
+			margin-left: 0;
+		}
+	}
+}

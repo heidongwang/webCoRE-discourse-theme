@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 by its authors; see AUTHORS.md or
@@ -18,5 +18,25 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "badges";
-@import "conditionals";
+@mixin apply($map) {
+	@each $key, $value in $map {
+		@if $key == link {
+			a {
+				@include apply($value);
+			}
+		}
+		@else if $key == hover {
+			&:hover {
+				@include apply($value);
+			}
+		}
+		@else if $key == icon {
+			svg {
+				@include apply($value);
+			}
+		}
+		@else {
+			#{$key}: $value;
+		}
+	}
+}
