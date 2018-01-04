@@ -18,5 +18,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//
+// The common stylesheet is loaded on every page for both desktop and mobile
+// devices.
+//
+
 @import "badges";
 @import "conditionals";
