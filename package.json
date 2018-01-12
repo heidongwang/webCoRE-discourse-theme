@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "The theme for the webCoRE Community, a forum powered by Discourse",
   "config": {
-    "hbs": "hbs --partial ./src/templates/{,**/}*.hbs"
+    "hbs": "hbs --partial ./src/templates/{,**/}*.hbs --helper ./src/templates/helpers.js"
   },
   "scripts": {
     "build": "run-p build:*",
