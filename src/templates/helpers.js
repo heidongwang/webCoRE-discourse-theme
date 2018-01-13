@@ -26,8 +26,9 @@ const helpers = {
 		let contents = fs.readFileSync(path.join('src/scripts', file), 'utf8');
 
 		return contents
-			// Remove the license comment and leading/trailing whitespace
-			.replace(/^\s*\/\*.*?\*\/\s*|\s*$/gs, '')
+			// Remove the license comment, leading/trailing whitespace, and
+			// documentation comments in /** format
+			.replace(/^\s*\/\*.*?\*\/\s*|\/\*\*.*?\*\/[ \t]*\n|\s*$/gs, '')
 			// Indent each non-blank line
 			.replace(/^(?=\s*\S)/gm, '\t');
 	},
