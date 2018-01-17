@@ -28,7 +28,7 @@ const helpers = {
 		return contents
 			// Remove the license comment, leading/trailing whitespace, and
 			// documentation comments in /** format
-			.replace(/^\s*\/\*.*?\*\/\s*|\/\*\*.*?\*\/[ \t]*\n|\s*$/gs, '')
+			.replace(/^\s*\/\*.*?\*\/\s*|[ \t]*\/\*\*.*?\*\/[ \t]*\n|\s*$/gs, '')
 			// Indent each non-blank line
 			.replace(/^(?=\s*\S)/gm, '\t');
 	},
