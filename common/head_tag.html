@@ -1,0 +1,364 @@
+<meta name="mobile-web-app-capable" value="yes"/>
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "Organization",
+	"name": "webCoRE",
+	"url": "https://community.webcore.co",
+	"sameAs": [
+		"https://www.facebook.com/groups/1023785497757470/"
+	]
+}
+</script>
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "WebSite",
+	"name": "webCoRE",
+	"url": "https://community.webcore.co",
+	"potentialAction": {
+		"@type": "SearchAction",
+		"target": "https://community.webcore.co/search?q={search_term_string}",
+		"query-input": "required name=search_term_string"
+	}
+}
+</script>
+
+<script type="text/javascript">
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	ga('create', 'UA-97562844-4', 'auto');
+	ga('send', 'pageview');
+</script>
+
+<script type="text/javascript">
+	(function($) {
+		var messages = {
+			// The community homepage content
+			homepage: 1 << 0,
+			// A request for donations
+			donate:   1 << 1,
+		};
+		var cookieName = 'wc-hidden';
+		var hiddenClassNamePrefix = 'hide-';
+		var togglerClassNamePrefix = 'toggle-hide-';
+		var $doc = $(document.documentElement);
+	
+		function hiddenMessages() {
+			return parseInt($.cookie(cookieName), 10) || 0;
+		}
+	
+		function isHidden(message, hidden) {
+			hidden = typeof hidden === 'number' ? hidden : hiddenMessages();
+			return hidden & messages[message]; // yes, bitwise &
+		}
+	
+		function toggleMessage(message) {
+			var hidden = hiddenMessages();
+			var flag = messages[message];
+			if (flag) {
+				var action;
+				if (isHidden(message, hidden)) { // yes, bitwise &
+					action = 'show';
+					hidden -= flag;
+					$doc.removeClass(hiddenClassNamePrefix + message);
+				} else {
+					action = 'hide';
+					hidden += flag;
+					$doc.addClass(hiddenClassNamePrefix + message);
+				}
+				$.cookie(cookieName, hidden, { expires: 365, path: '/' });
+				$doc.trigger(['wcToggleMessage', message, action].join('.'), [ message, action ]);
+			}
+		}
+	
+		(function setup() {
+			var hidden = hiddenMessages();
+			// Extracts the message name for a toggler button
+			var togglerMessagePattern = new RegExp('.*' + togglerClassNamePrefix + '(\\S+).*');
+	
+			// Immediately add hidden classes to the <html> element for anything hidden
+			if (hidden) {
+				Object.keys(messages).forEach(function(message) {
+					if (isHidden(message, hidden)) {
+						$doc.addClass(hiddenClassNamePrefix + message);
+					}
+				});
+			}
+	
+			// Handle all toggle button clicks that bubble up to the document element
+			$doc.on('click', '[class*=' + togglerClassNamePrefix + ']', function messageTogglerClick(e) {
+				var message = e.target.className.replace(togglerMessagePattern, '$1');
+				toggleMessage(message);
+			});
+	
+			// Scroll back to the top of the screen when the homepage is displayed,
+			// primarily for mobile
+			$doc.on('wcToggleMessage.homepage.show', function() {
+				window.scrollTo(0, 0);
+			});
+		})();
+	})(jQuery);
+	(function($, _) {
+		var attributes = {
+			conversationActiveDuration: 'data-duration',
+		};
+		var classNames = {
+			container: 'conversations',
+			containerPrepared: 'conversations-ready',
+			conversation: 'conversation',
+			conversationActive: 'active',
+		};
+		var selectors = {
+			unpreparedContainers: '.' + classNames.container + ':not(' + classNames.containerPrepared + ')',
+			conversationsInContainer: '> .' + classNames.conversation,
+			activeConversationInContainer: '> .' + classNames.conversation + '.' + classNames.conversationActive,
+			messagesInConversation: '> li',
+		};
+		var defaultActiveDurationPerMessage = 6000;
+	
+		function prepareNewConversations() {
+			$(selectors.unpreparedContainers).each(function() {
+				prepareConversations($(this));
+			});
+		}
+	
+		function prepareConversations($container) {
+			// Randomize the order of conversations
+			$container.html(
+				_.shuffle($container.children(selectors.conversationsInContainer))
+			);
+	
+			// Make all active then force a layout to get the max height
+			var $conversations = $container.find(selector.conversationsInContainer)
+				.addClass(classNames.conversationActive);
+			var maxHeight = Math.max.apply(Math, $conversations.map(function() {
+				return $(this).height();
+			}));
+	
+			// Only leave the first conversation active
+			$conversations.slice(1).removeClass(classNames.conversationActive);
+	
+			// Match all conversations to the height of the tallest
+			$conversations.css('min-height', maxHeight);
+	
+			scheduleNextConversation($conversations.first());
+	
+			$container.addClass(classNames.containerPrepared);
+		}
+	
+		function scheduleNextConversation($active) {
+			// Get the specified duration for the conversation to remain active
+			var duration = parseInt($active.attr(attributes.conversationActiveDuration), 10);
+			var $container = $active.parent();
+			// Default to a reasonable duration based on the number of messages
+			if (!duration) {
+				duration = defaultActiveDurationPerMessage * $active.find(selectors.messagesInConversation).length;
+			}
+			setTimeout(function() {
+				advanceToNextConversation($container);
+			}, duration);
+		}
+	
+		function advanceToNextConversation($container) {
+			var $active = $container.find(selectors.activeConversationInContainer);
+			// Fade out
+			$active.fadeTo(350, 0, function() {
+				// Activate the next conversation or wrap back to the first one
+				var $next = $active.is(':last-child') ? $active.siblings().first() : $active.next();
+				// Hide then avoid staying at 0% opacity next time
+				$active.removeClass(classNames.conversationActive).css('opacity', '');
+				// Make the next conversation active
+				$next.addClass(classNames.conversationActive);
+	
+				scheduleNextConversation($next);
+			});
+		}
+	
+		// On document ready set up all of the conversations on the page
+		$(prepareNewConversations);
+	})(jQuery, _);
+	// Add the wc-homepage class synchronously to ensure proper rendering while the
+	// page loads
+	if (location.pathname === '/') {
+		document.documentElement.classList.add('wc-homepage');
+	}
+	(function($) {
+		function overrideContentContainerWidth() {
+			var width = $.fn.width;
+			function discourseContentAwareWidth() {
+				if (this.selector === '#main-outlet .container') {
+					return $('#main-outlet * .container:visible').width();
+				}
+				return width.apply(this, arguments);
+			}
+			$.fn.width = discourseContentAwareWidth;
+		}
+		$(overrideContentContainerWidth);
+	})(jQuery);
+</script>
+
+<script type="text/discourse-plugin" version="0.4" defer async>
+	let link;
+	const wiki = 'https://wiki.webcore.co';
+	const community = 'https://community.webcore.co';
+	
+	const linkedKeywords = {
+		'case traversal policy': (link = `${wiki}/Case_Traversal_Policy`),
+	
+		'condition': (link = `${community}/t/conditions-and-triggers-the-difference/164`),
+		'conditions': link,
+		'trigger': link,
+		'triggers': link,
+	
+		'execution method': (link = `${wiki}/Execution_Method`),
+		'execution methods': link,
+		'asynchronous': link,
+		'synchronous': link,
+	
+		'expression': (link = `${wiki}/Expressions`),
+		'expressions': link,
+	
+		'function': (link = `${wiki}/Functions`),
+		'functions': link,
+	
+		'glossary': (link = `${wiki}/Glossary`),
+	
+		'piston state': (link = `${wiki}/Piston_State`),
+	
+		'task cancellation policy': (link = `${wiki}/Task_Cancellation_Policy`),
+		'task cancelation policy': link,
+	
+		'task scheduling policy': (link = `${wiki}/Task_Scheduling_Policy`),
+	
+		'variable': (link = `${wiki}/Variable`),
+		'variables': link,
+	
+		'wiki': (link = `${wiki}`),
+	
+		'$nfl': (link = `${wiki}/NFL`),
+		'nfl api': link,
+	
+		'$weather': (link = `${wiki}/Weather`),
+		'weather api': link,
+	};
+	
+	function replaceWithContents(el) {
+		$(el).contents().unwrap();
+	}
+	
+	function linkKeywords($html) {
+		if (!$html) {
+			return false;
+		}
+		let hasLinks = false;
+	
+		// Discourse operates on a fork of an old highlight implementation; docs:
+		// https://github.com/discourse/discourse/blob/master/vendor/assets/javascripts/highlight.js
+		$html.highlight(Object.keys(linkedKeywords), {
+			element: 'a',
+			className: 'wc-keyword',
+			wordsOnly: true,
+			caseSensitive: false,
+		});
+	
+		// Discard links nested in code blocks and other links
+		$html.find('a a.wc-keyword, code a.wc-keyword').each(
+			(i, el) => replaceWithContents(el)
+		);
+	
+		// Add the link href
+		$html.find('a.wc-keyword').each((i, el) => {
+			hasLinks = true;
+			let $el = $(el);
+			let href = linkedKeywords[$el.text().toLowerCase()];
+			if (href) {
+				$el.attr({
+					target: '_blank',
+					href,
+				});
+			} else {
+				// Remove markup for invalid links
+				replaceWithContents($el);
+			}
+		});
+	
+		return hasLinks;
+	}
+	
+	// Add links to post elements before they are added to the document
+	api.decorateCooked(linkKeywords);
+	function toggleHomepageClass(pathname, title) {
+		const method = pathname === '/' ? 'add' : 'remove';
+		document.documentElement.classList[method]('wc-homepage');
+	}
+	
+	api.onPageChange(toggleHomepageClass);
+	const menuFooterLinks = [
+		{
+			rawLabel: 'Donate',
+			href: 'https://www.paypal.me/ady624',
+			target: '_blank',
+		},
+		{
+			rawLabel: 'Wiki',
+			href: 'https://wiki.webcore.co',
+			target: '_blank',
+		},
+		{
+			rawLabel: 'Dashboard',
+			href: 'https://dashboard.webcore.co',
+			target: '_blank',
+		},
+	];
+	
+	api.decorateWidget('hamburger-menu:footerLinks', () => menuFooterLinks);
+	function headerButtons(helper) {
+		return [
+			helper.h('li', [
+				helper.h('a#donate-button.icon.btn-flat', {
+					title: 'Donate',
+					href:'https://www.paypal.me/ady624',
+					target: '_blank',
+				}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon.smaller')),
+			]),
+	
+			helper.h('li', [
+				helper.h('a#dashboard-button.icon.btn-flat', {
+					title: 'Dashboard',
+					href:'https://dashboard.webcore.co/',
+					target: '_blank',
+				}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon.smaller')),
+			]),
+	
+			helper.h('li', [
+				helper.h('a#wiki-button.icon.btn-flat', {
+					title: 'Documentation wiki',
+					href:'https://wiki.webcore.co/',
+					target: '_blank',
+				}, helper.h('i.fa.fa-book.home-button-icon.d-icon.smaller')),
+			]),
+	
+			// Buttons to show or hide the homepage greeting, only on desktop
+			helper.h('span.unless-mobile', [
+				helper.h('span.if-homepage-i', [
+					helper.h('a.btn.btn-small.btn-flat.login-button.toggle-hide-homepage.if-hide-homepage-ib', {
+						text: 'Show greeting',
+					}),
+					helper.h('a.btn.btn-small.login-button.toggle-hide-homepage.unless-hide-homepage', {
+						text: 'Hide greeting',
+					}),
+				])
+			]),
+		];
+	}
+	
+	api.decorateWidget('header-icons:before', headerButtons);
+</script>
+
+<link href="https://fonts.googleapis.com/css?family=Saira+Semi+Condensed:200,400,600" rel="stylesheet" />
