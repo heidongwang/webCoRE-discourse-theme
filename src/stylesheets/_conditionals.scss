@@ -29,7 +29,3 @@
 // Mobile or desktop
 @include conditional(desktop, '.desktop-view');
 @include conditional(mobile, '.mobile-view');
-
-// Messages that can be hidden
-@include conditional(hide-homepage);
-@include conditional(hide-donate);

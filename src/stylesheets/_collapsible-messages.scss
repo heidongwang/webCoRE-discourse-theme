@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017 by its authors; see AUTHORS.md or
@@ -18,11 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
+@import "mixins/conditional";
 
-@import "badges";
-@import "collapsible-messages";
-@import "conditionals";
+// Messages that can be hidden
+@include conditional(hide-homepage);
+@include conditional(hide-donate);
