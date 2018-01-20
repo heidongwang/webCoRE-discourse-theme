@@ -135,7 +135,7 @@
 			);
 	
 			// Make all active then force a layout to get the max height
-			var $conversations = $container.find(selector.conversationsInContainer)
+			var $conversations = $container.find(selectors.conversationsInContainer)
 				.addClass(classNames.conversationActive);
 			var maxHeight = Math.max.apply(Math, $conversations.map(function() {
 				return $(this).height();
@@ -318,7 +318,7 @@
 	];
 	
 	api.decorateWidget('hamburger-menu:footerLinks', () => menuFooterLinks);
-	function headerButtons(helper) {
+	function headerIcons(helper) {
 		return [
 			helper.h('li', [
 				helper.h('a#donate-button.icon.btn-flat', {
@@ -343,7 +343,12 @@
 					target: '_blank',
 				}, helper.h('i.fa.fa-book.home-button-icon.d-icon.smaller')),
 			]),
+		];
+	}
 	
+	api.decorateWidget('header-icons:before', headerIcons);
+	function headerButtons(helper) {
+		return [
 			// Buttons to show or hide the homepage greeting, only on desktop
 			helper.h('span.unless-mobile', [
 				helper.h('span.if-homepage-i', [
@@ -358,7 +363,7 @@
 		];
 	}
 	
-	api.decorateWidget('header-icons:before', headerButtons);
+	api.decorateWidget('header-buttons:before', headerButtons);
 </script>
 
 <link href="https://fonts.googleapis.com/css?family=Saira+Semi+Condensed:200,400,600" rel="stylesheet" />

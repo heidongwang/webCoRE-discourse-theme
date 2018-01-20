@@ -3,7 +3,7 @@
 /*
  * webCoRE Discourse theme
  *
- * Copyright 2017 by its authors; see AUTHORS.md or
+ * Copyright 2017-2018 authors; see AUTHORS.md or
  * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -159,6 +159,28 @@ $logomark-image: contrast-switch(
 	$if-dark: 'https://community.webcore.co/uploads/default/original/2X/7/7b957d3bc7df5200d1e7a7b1f247155fa3d8fd65.svg',
 	$if-light: 'https://community.webcore.co/uploads/default/original/2X/9/9ab0be1e34db8380a430a655173c215d31698caa.svg'
 );
+@mixin apply($map) {
+	@each $key, $value in $map {
+		@if $key == link {
+			a {
+				@include apply($value);
+			}
+		}
+		@else if $key == hover {
+			&:hover {
+				@include apply($value);
+			}
+		}
+		@else if $key == icon {
+			svg {
+				@include apply($value);
+			}
+		}
+		@else {
+			#{$key}: $value;
+		}
+	}
+}
 @mixin badge($group, $badges: $badges) {
 	$badge: map-get($badges, $group);
 	$content: map-get($badge, content);
