@@ -18,6 +18,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+@import "apply";
+
 @mixin badge($group, $badges: $badges) {
 	$badge: map-get($badges, $group);
 	$content: map-get($badge, content);
