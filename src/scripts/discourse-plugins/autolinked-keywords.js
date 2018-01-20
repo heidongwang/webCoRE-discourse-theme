@@ -1,7 +1,7 @@
 /*
  * webCoRE Discourse theme
  *
- * Copyright 2017 by its authors; see AUTHORS.md or
+ * Copyright 2017-2018 authors; see AUTHORS.md or
  * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
  *
  *  This program is free software: you can redistribute it and/or modify

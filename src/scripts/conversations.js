@@ -1,7 +1,7 @@
 /*
  * webCoRE Discourse theme
  *
- * Copyright 2017 by its authors; see AUTHORS.md or
+ * Copyright 2017-2018 authors; see AUTHORS.md or
  * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -84,7 +84,7 @@
 		);
 
 		// Make all active then force a layout to get the max height
-		var $conversations = $container.find(selector.conversationsInContainer)
+		var $conversations = $container.find(selectors.conversationsInContainer)
 			.addClass(classNames.conversationActive);
 		var maxHeight = Math.max.apply(Math, $conversations.map(function() {
 			return $(this).height();
