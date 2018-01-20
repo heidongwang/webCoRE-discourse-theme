@@ -19,24 +19,36 @@
 */
 
 /**
- * Buttons to prepend to the navbar
+ * Icon buttons to prepend before the navbar menu and profile icons
  * @param  {DecoratorHelper} helper A utility for generating DOM elements
  * @return {Array}
  */
-function headerButtons(helper) {
+function headerIcons(helper) {
 	return [
-		// Buttons to show or hide the homepage greeting, only on desktop
-		helper.h('span.unless-mobile', [
-			helper.h('span.if-homepage-i', [
-				helper.h('a.btn.btn-small.btn-flat.login-button.toggle-hide-homepage.if-hide-homepage-ib', {
-					text: 'Show greeting',
-				}),
-				helper.h('a.btn.btn-small.login-button.toggle-hide-homepage.unless-hide-homepage', {
-					text: 'Hide greeting',
-				}),
-			])
+		helper.h('li', [
+			helper.h('a#donate-button.icon.btn-flat', {
+				title: 'Donate',
+				href:'https://www.paypal.me/ady624',
+				target: '_blank',
+			}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon.smaller')),
+		]),
+
+		helper.h('li', [
+			helper.h('a#dashboard-button.icon.btn-flat', {
+				title: 'Dashboard',
+				href:'https://dashboard.webcore.co/',
+				target: '_blank',
+			}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon.smaller')),
+		]),
+
+		helper.h('li', [
+			helper.h('a#wiki-button.icon.btn-flat', {
+				title: 'Documentation wiki',
+				href:'https://wiki.webcore.co/',
+				target: '_blank',
+			}, helper.h('i.fa.fa-book.home-button-icon.d-icon.smaller')),
 		]),
 	];
 }
 
-api.decorateWidget('header-buttons:before', headerButtons);
+api.decorateWidget('header-icons:before', headerIcons);
