@@ -45,6 +45,9 @@ $discourse-bg-color: $secondary;
 $discourse-link-color: $tertiary;
 $discourse-navigation-color: $quaternary;
 $discourse-highlight-color: $highlight;
+$discourse-danger-color: $danger;
+$discourse-success-color: $success;
+$discourse-love-color: $love;
 $discourse-is-dark: luma($discourse-bg-color) < 130;
 /* SmartThings brand/site colors*/
 $smartthings-primary: #15bfff;
@@ -131,6 +134,9 @@ $whisper-button: (
 	background-color: $color,
 	color: contrast-switch($color, white, black),
 );
+$deleted-topic: (
+	background-color: rgba($discourse-danger-color, 0.1),
+);
 /* Autolinked keywords in topics and replies*/
 $color: $discourse-text-color;
 $keyword-link: (
@@ -181,6 +187,10 @@ $logomark-image: contrast-switch(
 		}
 	}
 }
+a.wc-keyword {
+	border-bottom-width: 1px;
+	@include apply($keyword-link);
+}
 @mixin badge($group, $badges: $badges) {
 	$badge: map-get($badges, $group);
 	$content: map-get($badge, content);
@@ -212,11 +222,11 @@ $logomark-image: contrast-switch(
 $badges: (
 	verification-warning: (
 		background-color: #f00,
-		content: "WARNING - No Response to Verification Requests!!!",
+		content: 'WARNING - No Response to Verification Requests!!!',
 	),
 	awaiting-verification: (
 		background-color: #f90,
-		content: "ST Username Awaiting Verification",
+		content: 'ST Username Awaiting Verification',
 	),
 	minion: (
 		background-color: rgba(contrast-switch($discourse-bg-color, white, #fed55d), 0.2),
@@ -224,18 +234,18 @@ $badges: (
 		background-position: center,
 		background-repeat: no-repeat,
 		background-size: contain,
-		content: " ",
+		content: ' ',
 		width: 104px,
 		height: 24px,
 		vertical-align: middle,
 	),
 	new-user: (
 		background-color: #f00,
-		content: "User Verification Not Started",
+		content: 'User Verification Not Started',
 	),
 	st-staff: (
 		background-color: #00a0dc,
-		content: "SmartThings Staff",
+		content: 'SmartThings Staff',
 	),
 );
 .topic-post {
@@ -285,7 +295,7 @@ $badges: (
 	}
 
 	/* When a new post is added it is not yet associated with the correct groups*/
-	/* so badges should be hidden. The post is "staged" for a brief moment until*/
+	/* so badges should be hidden. The post is 'staged' for a brief moment until*/
 	/* the server responds.*/
 	&.staged .username::after {
 		display: none !important;
@@ -321,6 +331,28 @@ $badges: (
 /* Messages that can be hidden*/
 @include conditional(hide-homepage);
 @include conditional(hide-donate);
+.docked-composer {
+	left: 5% !important;
+	right: 5% !important;
+	width: auto;
+
+	.docked-editor {
+		width: 100%;
+
+		.d-editor-container {
+			width: 100%;
+		}
+	}
+
+	.d-editor-textarea-wrapper .d-editor-input {
+		-moz-box-sizing: border-box;
+		     box-sizing: border-box;
+	}
+
+	.d-editor-button-bar {
+		bottom: 2px !important;
+	}
+}
 /* Show/hide content based on page navigation*/
 @include conditional(homepage, '.wc-homepage');
 @include conditional(categories, '.navigation-categories');
@@ -329,3 +361,558 @@ $badges: (
 /* Mobile or desktop*/
 @include conditional(desktop, '.desktop-view');
 @include conditional(mobile, '.mobile-view');
+/* Animation keyframes for a message that pops in*/
+@-webkit-keyframes message-push {
+	0% {
+		top: 8px;
+		opacity: 0;
+		-webkit-transform: scale(0.95);
+		        transform: scale(0.95);
+	}
+
+	60% {
+		opacity: 1;
+	}
+
+	80% {
+		top: -1px;
+		-webkit-transform: scale(1.01);
+		        transform: scale(1.01);
+	}
+
+	100% {
+		top: 0;
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
+@keyframes message-push {
+	0% {
+		top: 8px;
+		opacity: 0;
+		-webkit-transform: scale(0.95);
+		        transform: scale(0.95);
+	}
+
+	60% {
+		opacity: 1;
+	}
+
+	80% {
+		top: -1px;
+		-webkit-transform: scale(1.01);
+		        transform: scale(1.01);
+	}
+
+	100% {
+		top: 0;
+		-webkit-transform: scale(1);
+		        transform: scale(1);
+	}
+}
+.conversation,
+.conversations {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+/* A series of conversations that will be animated one at a time*/
+.conversations {
+	> li {
+		display: none;
+
+		&.active {
+			display: block;
+		}
+	}
+}
+/* A single conversation with messages between two participants*/
+.conversation {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: start;
+	-webkit-align-items: flex-start;
+	        align-items: flex-start;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	        flex-direction: column;
+	font-size: 1.2em;
+
+	/* A message*/
+	li {
+		-webkit-box-flex: 0;
+		-webkit-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		position: relative;
+		border-radius: 8px;
+		margin: 8px;
+		padding: 8px 16px;
+		max-width: 75%;
+		background-image: linear-gradient(to bottom, rgba(white, 0.1), rgba(white, 0) 80%);
+
+		/* Pop each message in*/
+		-webkit-animation: message-push 200ms ease-out 1s;
+		        animation: message-push 200ms ease-out 1s;
+		-webkit-animation-fill-mode: backwards;
+		        animation-fill-mode: backwards;
+
+		/* Up to 4 messages per conversation, 2 seconds per message.*/
+		/* The duration for which the entire conversation remains visible is*/
+		/* controlled by the conversations script*/
+		&:nth-child(2) {
+			-webkit-animation-delay: 4s;
+			        animation-delay: 4s;
+		}
+
+		&:nth-child(3) {
+			-webkit-animation-delay: 6s;
+			        animation-delay: 6s;
+		}
+
+		&:nth-child(4) {
+			-webkit-animation-delay: 9s;
+			        animation-delay: 9s;
+		}
+
+		/* Dialog bubble triangle*/
+		&::after {
+			position: absolute;
+			bottom: -8px;
+			width: 0;
+			height: 0;
+			border: 0 solid transparent;
+			border-width: 4px 6px;
+			content: ' ';
+		}
+
+		/* Questions on the left side*/
+		&.them {
+			left: 0;
+			@include apply(map-get($conversation, them));
+
+			/* Dialog bubble triangle*/
+			&::after {
+				$bg-color: map-get(map-get($conversation, them), background-color);
+
+				left: 8px;
+				border-left-color: $bg-color;
+				border-top-color: $bg-color;
+			}
+		}
+
+		/* Answers on the right side*/
+		&.us {
+			-webkit-align-self: flex-end;
+			        align-self: flex-end;
+			right: 0;
+			@include apply(map-get($conversation, us));
+
+			/* Dialog bubble triangle*/
+			&::after {
+				$bg-color: map-get(map-get($conversation, us), background-color);
+
+				right: 8px;
+				border-top-color: $bg-color;
+				border-right-color: $bg-color;
+			}
+		}
+	}
+}
+/* Milder indication of deleted topics*/
+.deleted .topic-body {
+	background-color: rgba(255, 240, 240, 0.5);
+}
+/* Interior scrolling in modals is not obvious and can be very confusing;*/
+/* instead scroll the entire modal. https://github.com/ady624/webCoRE/issues/28*/
+.modal-body {
+	max-height: none;
+}
+@if ($discourse-is-dark) {
+	/* Discourse chooses a bad mid-gray that makes buttons look disabled*/
+	.btn-primary,
+	.nav-pills > li:not(.active) > a {
+		color: rgba(white, 0.95);
+	}
+}
+/* Announcement banner*/
+#banner {
+	margin-top: 10px;
+}
+/* Allow content containers to extend the full width of the viewport*/
+#main-outlet {
+	/* Align topic navigation directly below the top nav*/
+	padding-top: 63px;
+
+	/* Was applied to .wrap*/
+	.container {
+		max-width: 1110px;
+		margin: 0 auto;
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	&,
+	> .container:first-child {
+		max-width: none;
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+/* Match white page navigation bar indentation to the dark topic bar*/
+.body-page,
+.full-width {
+	> .nav-pills:first-child {
+		padding: 8px;
+	}
+}
+#main .d-header {
+	/* Subtle shadow below navbar*/
+	box-shadow: 0 1px 1px rgba(black, 0.25) !important;
+
+	/* Smaller nav icons*/
+	.d-header-icons .fa {
+		font-size: 1.3em;
+	}
+
+	.logo-small {
+		width: 33px;
+	}
+
+	/* Replace the header search UI with the webCoRE logotype*/
+	.title {
+		/* Logo icon*/
+		a {
+			background: url($logomark-image) center no-repeat;
+			background-size: contain;
+
+			img {
+				opacity: 0;
+			}
+		}
+
+		/* Logo text*/
+		.header-search {
+			margin-left: 8px;
+
+			&::before {
+				display: block;
+				content: ' ';
+				background: url($logotype-image) center no-repeat;
+				background-size: contain;
+				width: 144px;
+				height: 26px;
+			}
+
+			> * {
+				display: none !important;
+			}
+		}
+	}
+}
+/* Align topic navigation directly below the header*/
+#main-outlet {
+	padding-top: 63px;
+	margin-top: 0;
+}
+.welcome-message {
+	.greeting {
+		line-height: 1.5em;
+
+		.greeting-container {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			        align-items: center;
+			-webkit-flex-wrap: wrap;
+			        flex-wrap: wrap;
+			padding-top: 50px;
+			padding-bottom: 50px;
+		}
+		/* On large screens position the conversation beside the greeting text*/
+		.conversations,
+		.greeting-text {
+			-webkit-box-flex: 1;
+			-webkit-flex: 1 0 50%;
+			        flex: 1 0 50%;
+		}
+		/* On small screens position the conversation above the greeting text*/
+		@media screen and (max-width: map-get($breakpoints, conversations-above-greeting) - 1) {
+			.conversations,
+			.greeting-text {
+				-webkit-box-flex: 1;
+				-webkit-flex: 1 1 auto;
+				        flex: 1 1 auto;
+				-webkit-box-ordinal-group: 2;
+				-webkit-order: 1;
+				        order: 1;
+			}
+
+			.conversations {
+				max-width: 600px;
+				margin: 0 auto 32px;
+				-webkit-box-ordinal-group: 1;
+				-webkit-order: 0;
+				        order: 0;
+			}
+		}
+
+		.text {
+			font-size: 18px;
+			font-weight: 200;
+		}
+
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	h1 {
+		margin-bottom: 32px;
+		font-weight: 200;
+		font-size: 2.5em;
+		line-height: 1.2em;
+	}
+
+	h2 {
+		text-align: center;
+		font-weight: 200;
+		font-size: 2em;
+		margin: 32px 0 16px;
+	}
+
+	.container {
+		position: relative;
+	}
+
+	.toggle-hide-homepage {
+		text-align: center;
+		padding-top: 12px;
+		padding-bottom: 12px;
+	}
+}
+.ribbon-dark {
+	background-image: linear-gradient(to bottom, rgba(white, 0), rgba(white, 0.02));
+	@include apply(map-get($ribbon, dark));
+}
+.ribbon-quick-links {
+	@include apply(map-get($ribbon, quick-links));
+}
+.ribbon-tiles {
+	@include apply(map-get($ribbon, tiles));
+}
+.tiles {
+	$padding: 16px;
+
+	display: -webkit-box;
+
+	display: -webkit-flex;
+
+	display: flex;
+	-webkit-box-align: stretch;
+	-webkit-align-items: stretch;
+	        align-items: stretch;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+	list-style-type: none;
+	padding: 0;
+
+	/* Align left and right tiles with surrounding content*/
+	margin: ($padding / 2) (-$padding);
+
+	li {
+		-webkit-box-flex: 1;
+		-webkit-flex: 1 0 0;
+		        flex: 1 0 0;
+		margin: $padding;
+
+		/* Large icons*/
+		svg {
+			$size: 96px;
+
+			display: block;
+			width: $size;
+			height: $size;
+			margin: $padding auto (2 * $padding);
+		}
+
+		a {
+			border: 1px solid transparent;
+			border-bottom: 8px solid transparent;
+			@include apply($tile);
+
+			display: block;
+			height: 100%;
+			width: 100%;
+			-moz-box-sizing: border-box;
+			     box-sizing: border-box;
+			padding: $padding;
+			box-shadow: 0 1px 3px rgba(black, 0.2);
+			transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+			font-family: $header-font-family;
+			font-size: 22px;
+			text-align: center;
+			white-space: nowrap;
+
+			&:hover {
+				svg {
+					-webkit-filter: drop-shadow(0 4px 0 rgba(black, 0.25));
+					        filter: drop-shadow(0 4px 0 rgba(black, 0.25));
+				}
+			}
+		}
+	}
+}
+.nav-pills > li {
+	&.active > a,
+	> a:hover {
+		color: white;
+	}
+
+	&:not(.active) > a {
+		color: $discourse-text-color;
+	}
+}
+.quick-links.nav-pills {
+	$bar-padding-v: 2px;
+	$link-margin-bottom: 8px;
+	$border-width: 1px;
+	$border-bottom-width: 3px;
+	$button-height: 36px;
+
+	display: -webkit-box;
+
+	display: -webkit-flex;
+
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	        justify-content: space-between;
+	margin: 0;
+	font-size: 0.9em;
+
+	/* Accommodate shadow and border on links*/
+	padding-top: $bar-padding-v;
+	height: $button-height + 2 * $bar-padding-v + $border-width + $border-bottom-width;
+	-webkit-flex-wrap: wrap;
+	        flex-wrap: wrap;
+	overflow: hidden;
+
+	/* Two rows on small screens, center links for less awkward spacing*/
+	@media screen and (max-width: map-get($breakpoints, quick-links-two-lines) - 1) {
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		        justify-content: center;
+		height: 2 * $button-height + $link-margin-bottom + 2 * $bar-padding-v + $border-width + $border-bottom-width;
+	}
+
+	/* Remove a clearfix that messes up space-between justification*/
+	&::after,
+	&::before {
+		display: none;
+	}
+
+	> li {
+		-webkit-box-flex: 0;
+		-webkit-flex: 0 0 auto;
+		        flex: 0 0 auto;
+		float: none;
+		margin: 0 2px;
+
+		> a {
+			$padding-v: 8px;
+
+			border: $border-width solid transparent;
+			border-bottom: $border-bottom-width solid transparent;
+			box-shadow: 0 1px 2px rgba(black, 0.2);
+			transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+			padding-top: $padding-v - $border-width;
+			padding-bottom: $padding-v - $border-bottom-width;
+			margin-bottom: $link-margin-bottom;
+		}
+
+		&:not(.active) > a {
+			@include apply($quick-link);
+		}
+	}
+}
+.nav-pills > li:not(.active) > a:hover {
+	/* Discourse uses a lightened color by default*/
+	background-color: $discourse-navigation-color;
+}
+/* Toolbar for category navigation, new topic, latest/new/unread*/
+.list-controls {
+	@extend .ribbon-dark;
+
+	padding: 0;
+
+	/* Not sure what the intent was for these, left here just in case*/
+	position: relative;
+	z-index: 2;
+
+	.navigation-container {
+		padding: 8px 0;
+		/* Clear floats inside the container*/
+		&::after {
+			display: block;
+			clear: both;
+			content: '';
+		}
+		/* Some buttons and links have bottom margins*/
+		.btn,
+		.nav {
+			margin-bottom: 0;
+		}
+	}
+	/* Fix some negative margins*/
+	.container {
+		margin: 0;
+	}
+
+	.desktop-view & {
+		.nav-pills > li {
+			&.active > a,
+			> a:hover {
+				color: mix(black, $smartthings-primary, 95%);
+			}
+
+			&:not(.active) > a {
+				color: mix(white, $smartthings-primary, 95%);
+
+				&:hover {
+					/* Discourse uses a lightened color*/
+					background-color: $discourse-navigation-color;
+				}
+			}
+		}
+	}
+}
+@media screen and (min-width: 480px) {
+	#top-navbar-links a::after {
+		content: attr(title);
+		padding-left: 4px;
+	}
+}
+h1,
+h2 {
+	font-family: $header-font-family;
+}
+/* Better indication of whisper posts and the composer in whisper mode*/
+.topic-post.whisper,
+#reply-control.composing-whisper {
+	@include apply($whisper);
+
+	.submit-panel button.create,
+	button.reply {
+		@include apply($whisper-button);
+
+		&::after {
+			content: ' as Whisper';
+		}
+	}
+}
