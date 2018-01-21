@@ -43,10 +43,12 @@
 	 * @type {Object}
 	 */
 	var selectors = {
-		unpreparedContainers: '.' + classNames.container + ':not(' + classNames.containerPrepared + ')',
-		conversationsInContainer: '> .' + classNames.conversation,
-		activeConversationInContainer: '> .' + classNames.conversation + '.' + classNames.conversationActive,
-		messagesInConversation: '> li',
+		container: '.' + classNames.container,
+		conversation: '.' + classNames.conversation,
+		unpreparedContainer: '.' + classNames.container + ':not(' + classNames.containerPrepared + ')',
+		conversationsInContainer: '> li',
+		activeConversationInContainer: '> li.' + classNames.conversationActive,
+		messagesInConversation: 'li',
 	};
 	/**
 	 * The length of time given to read each message when an explicit duration
@@ -64,7 +66,7 @@
 	 * yet been prepared.
 	 */
 	function prepareNewConversations() {
-		$(selectors.unpreparedContainers).each(function() {
+		$(selectors.unpreparedContainer).each(function() {
 			prepareConversations($(this));
 		});
 	}
@@ -80,7 +82,7 @@
 	function prepareConversations($container) {
 		// Randomize the order of conversations
 		$container.html(
-			_.shuffle($container.children(selectors.conversationsInContainer))
+			_.shuffle($container.children())
 		);
 
 		// Make all active then force a layout to get the max height
@@ -93,10 +95,13 @@
 		// Only leave the first conversation active
 		$conversations.slice(1).removeClass(classNames.conversationActive);
 
-		// Match all conversations to the height of the tallest
-		$conversations.css('min-height', maxHeight);
-
-		scheduleNextConversation($conversations.first());
+		// Match all conversations to the height of the tallest and begin animation
+		scheduleNextConversation($conversations
+			.find(selectors.conversation)
+			.css('min-height', maxHeight)
+			.first()
+			.parent()
+		);
 
 		$container.addClass(classNames.containerPrepared);
 	}
@@ -113,22 +118,20 @@
 	function scheduleNextConversation($active) {
 		// Get the specified duration for the conversation to remain active
 		var duration = parseInt($active.attr(attributes.conversationActiveDuration), 10);
-		var $container = $active.parent();
 		// Default to a reasonable duration based on the number of messages
 		if (!duration) {
 			duration = defaultActiveDurationPerMessage * $active.find(selectors.messagesInConversation).length;
 		}
 		setTimeout(function() {
-			advanceToNextConversation($container);
+			advanceToNextConversation($active);
 		}, duration);
 	}
 
 	/**
 	 * Fades out the active conversation and then shows the next one.
-	 * @param {jQuery} $container An element containing multiple conversations
+	 * @param {jQuery} $active The active conversation
 	 */
-	function advanceToNextConversation($container) {
-		var $active = $container.find(selectors.activeConversationInContainer);
+	function advanceToNextConversation($active) {
 		// Fade out
 		$active.fadeTo(350, 0, function() {
 			// Activate the next conversation or wrap back to the first one
