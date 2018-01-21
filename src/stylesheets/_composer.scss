@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017-2018 authors; see AUTHORS.md or
@@ -18,22 +18,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
+.docked-composer {
+	left: 5% !important;
+	right: 5% !important;
+	width: auto;
 
-@import 'autolinked-keywords';
-@import 'badges';
-@import 'collapsible-messages';
-@import 'composer';
-@import 'conditionals';
-@import 'conversations';
-@import 'discourse-fixes';
-@import 'full-width';
-@import 'header';
-@import 'homepage';
-@import 'navigation';
-@import 'ribbons';
-@import 'type';
-@import 'whisper';
+	.docked-editor {
+		width: 100%;
+
+		.d-editor-container {
+			width: 100%;
+		}
+	}
+
+	.d-editor-textarea-wrapper .d-editor-input {
+		box-sizing: border-box;
+	}
+
+	.d-editor-button-bar {
+		bottom: 2px !important;
+	}
+}

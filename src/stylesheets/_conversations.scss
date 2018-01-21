@@ -1,0 +1,144 @@
+/*!
+ * webCoRE Discourse theme
+ *
+ * Copyright 2017-2018 authors; see AUTHORS.md or
+ * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@import 'variables';
+@import 'mixins/apply';
+
+// Animation keyframes for a message that pops in
+@keyframes message-push {
+	0% {
+		top: 8px;
+		opacity: 0;
+		transform: scale(0.95);
+	}
+
+	60% {
+		opacity: 1;
+	}
+
+	80% {
+		top: -1px;
+		transform: scale(1.01);
+	}
+
+	100% {
+		top: 0;
+		transform: scale(1);
+	}
+}
+
+.conversation,
+.conversations {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+// A series of conversations that will be animated one at a time
+.conversations {
+	> li {
+		display: none;
+
+		&.active {
+			display: block;
+		}
+	}
+}
+
+// A single conversation with messages between two participants
+.conversation {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-around;
+	flex-direction: column;
+	font-size: 1.2em;
+
+	// A message
+	li {
+		flex: 0 0 auto;
+		position: relative;
+		border-radius: 8px;
+		margin: 8px;
+		padding: 8px 16px;
+		max-width: 75%;
+		background-image: linear-gradient(to bottom, rgba(white, 0.1), rgba(white, 0) 80%);
+
+		// Pop each message in
+		animation: message-push 200ms ease-out 1s;
+		animation-fill-mode: backwards;
+
+		// Up to 4 messages per conversation, 2 seconds per message.
+		// The duration for which the entire conversation remains visible is
+		// controlled by the conversations script
+		&:nth-child(2) {
+			animation-delay: 4s;
+		}
+
+		&:nth-child(3) {
+			animation-delay: 6s;
+		}
+
+		&:nth-child(4) {
+			animation-delay: 9s;
+		}
+
+		// Dialog bubble triangle
+		&::after {
+			position: absolute;
+			bottom: -8px;
+			width: 0;
+			height: 0;
+			border: 0 solid transparent;
+			border-width: 4px 6px;
+			content: ' ';
+		}
+
+		// Questions on the left side
+		&.them {
+			left: 0;
+			@include apply(map-get($conversation, them));
+
+			// Dialog bubble triangle
+			&::after {
+				$bg-color: map-get(map-get($conversation, them), background-color);
+
+				left: 8px;
+				border-left-color: $bg-color;
+				border-top-color: $bg-color;
+			}
+		}
+
+		// Answers on the right side
+		&.us {
+			align-self: flex-end;
+			right: 0;
+			@include apply(map-get($conversation, us));
+
+			// Dialog bubble triangle
+			&::after {
+				$bg-color: map-get(map-get($conversation, us), background-color);
+
+				right: 8px;
+				border-top-color: $bg-color;
+				border-right-color: $bg-color;
+			}
+		}
+	}
+}

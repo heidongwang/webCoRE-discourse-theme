@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017-2018 authors; see AUTHORS.md or
@@ -18,22 +18,28 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
+@import 'variables';
 
-@import 'autolinked-keywords';
-@import 'badges';
-@import 'collapsible-messages';
-@import 'composer';
-@import 'conditionals';
-@import 'conversations';
-@import 'discourse-fixes';
-@import 'full-width';
-@import 'header';
-@import 'homepage';
-@import 'navigation';
-@import 'ribbons';
-@import 'type';
-@import 'whisper';
+// Milder indication of deleted topics
+.deleted .topic-body {
+	background-color: rgba(255, 240, 240, 0.5);
+}
+
+// Interior scrolling in modals is not obvious and can be very confusing;
+// instead scroll the entire modal. https://github.com/ady624/webCoRE/issues/28
+.modal-body {
+	max-height: none;
+}
+
+@if ($discourse-is-dark) {
+	// Discourse chooses a bad mid-gray that makes buttons look disabled
+	.btn-primary,
+	.nav-pills > li:not(.active) > a {
+		color: rgba(white, 0.95);
+	}
+}
+
+// Announcement banner
+#banner {
+	margin-top: 10px;
+}

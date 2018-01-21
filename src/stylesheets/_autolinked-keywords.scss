@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017-2018 authors; see AUTHORS.md or
@@ -11,29 +11,17 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  MERCHANTABILITY or FITNESSı FOR A PARTICULAR PURPOSE. See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
+@import 'variables';
+@import 'mixins/apply';
 
-@import 'autolinked-keywords';
-@import 'badges';
-@import 'collapsible-messages';
-@import 'composer';
-@import 'conditionals';
-@import 'conversations';
-@import 'discourse-fixes';
-@import 'full-width';
-@import 'header';
-@import 'homepage';
-@import 'navigation';
-@import 'ribbons';
-@import 'type';
-@import 'whisper';
+a.wc-keyword {
+	border-bottom-width: 1px;
+	@include apply($keyword-link);
+}

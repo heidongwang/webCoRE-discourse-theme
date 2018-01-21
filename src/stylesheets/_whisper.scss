@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017-2018 authors; see AUTHORS.md or
@@ -18,22 +18,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
+@import 'mixins/apply';
 
-@import 'autolinked-keywords';
-@import 'badges';
-@import 'collapsible-messages';
-@import 'composer';
-@import 'conditionals';
-@import 'conversations';
-@import 'discourse-fixes';
-@import 'full-width';
-@import 'header';
-@import 'homepage';
-@import 'navigation';
-@import 'ribbons';
-@import 'type';
-@import 'whisper';
+// Better indication of whisper posts and the composer in whisper mode
+.topic-post.whisper,
+#reply-control.composing-whisper {
+	@include apply($whisper);
+
+	.submit-panel button.create,
+	button.reply {
+		@include apply($whisper-button);
+
+		&::after {
+			content: ' as Whisper';
+		}
+	}
+}

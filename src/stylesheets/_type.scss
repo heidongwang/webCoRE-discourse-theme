@@ -1,4 +1,4 @@
-/*
+/*!
  * webCoRE Discourse theme
  *
  * Copyright 2017-2018 authors; see AUTHORS.md or
@@ -18,22 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//
-// The common stylesheet is loaded on every page for both desktop and mobile
-// devices.
-//
-
-@import 'autolinked-keywords';
-@import 'badges';
-@import 'collapsible-messages';
-@import 'composer';
-@import 'conditionals';
-@import 'conversations';
-@import 'discourse-fixes';
-@import 'full-width';
-@import 'header';
-@import 'homepage';
-@import 'navigation';
-@import 'ribbons';
-@import 'type';
-@import 'whisper';
+h1,
+h2 {
+	font-family: $header-font-family;
+}

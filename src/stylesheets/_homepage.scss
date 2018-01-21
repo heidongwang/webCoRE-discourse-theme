@@ -1,0 +1,87 @@
+/*!
+ * webCoRE Discourse theme
+ *
+ * Copyright 2017-2018 authors; see AUTHORS.md or
+ * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@import 'variables';
+
+.welcome-message {
+	.greeting {
+		line-height: 1.5em;
+
+		.greeting-container {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			padding-top: 50px;
+			padding-bottom: 50px;
+		}
+		// On large screens position the conversation beside the greeting text
+		.conversations,
+		.greeting-text {
+			flex: 1 0 50%;
+		}
+		// On small screens position the conversation above the greeting text
+		@media screen and (max-width: map-get($breakpoints, conversations-above-greeting) - 1) {
+			.conversations,
+			.greeting-text {
+				flex: 1 1 auto;
+				order: 1;
+			}
+
+			.conversations {
+				max-width: 600px;
+				margin: 0 auto 32px;
+				order: 0;
+			}
+		}
+
+		.text {
+			font-size: 18px;
+			font-weight: 200;
+		}
+
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	h1 {
+		margin-bottom: 32px;
+		font-weight: 200;
+		font-size: 2.5em;
+		line-height: 1.2em;
+	}
+
+	h2 {
+		text-align: center;
+		font-weight: 200;
+		font-size: 2em;
+		margin: 32px 0 16px;
+	}
+
+	.container {
+		position: relative;
+	}
+
+	.toggle-hide-homepage {
+		text-align: center;
+		padding-top: 12px;
+		padding-bottom: 12px;
+	}
+}

@@ -30,6 +30,9 @@ $discourse-bg-color: $secondary;
 $discourse-link-color: $tertiary;
 $discourse-navigation-color: $quaternary;
 $discourse-highlight-color: $highlight;
+$discourse-danger-color: $danger;
+$discourse-success-color: $success;
+$discourse-love-color: $love;
 $discourse-is-dark: luma($discourse-bg-color) < 130;
 
 // SmartThings brand/site colors
@@ -122,6 +125,10 @@ $color: mix($discourse-bg-color, $discourse-highlight-color, 45%);
 $whisper-button: (
 	background-color: $color,
 	color: contrast-switch($color, white, black),
+);
+
+$deleted-topic: (
+	background-color: rgba($discourse-danger-color, 0.1),
 );
 
 // Autolinked keywords in topics and replies

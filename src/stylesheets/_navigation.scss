@@ -1,0 +1,199 @@
+/*!
+ * webCoRE Discourse theme
+ *
+ * Copyright 2017-2018 authors; see AUTHORS.md or
+ * https://webcore-mechanics.github.io/webCoRE-discourse-theme/AUTHORS
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@import 'variables';
+@import 'mixins/apply';
+@import 'ribbons';
+
+.tiles {
+	$padding: 16px;
+
+	display: flex;
+	align-items: stretch;
+	flex-wrap: wrap;
+	list-style-type: none;
+	padding: 0;
+
+	// Align left and right tiles with surrounding content
+	margin: ($padding / 2) (-$padding);
+
+	li {
+		flex: 1 0 0;
+		margin: $padding;
+
+		// Large icons
+		svg {
+			$size: 96px;
+
+			display: block;
+			width: $size;
+			height: $size;
+			margin: $padding auto (2 * $padding);
+		}
+
+		a {
+			border: 1px solid transparent;
+			border-bottom: 8px solid transparent;
+			@include apply($tile);
+
+			display: block;
+			height: 100%;
+			width: 100%;
+			box-sizing: border-box;
+			padding: $padding;
+			box-shadow: 0 1px 3px rgba(black, 0.2);
+			transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+			font-family: $header-font-family;
+			font-size: 22px;
+			text-align: center;
+			white-space: nowrap;
+
+			&:hover {
+				svg {
+					filter: drop-shadow(0 4px 0 rgba(black, 0.25));
+				}
+			}
+		}
+	}
+}
+
+.nav-pills > li {
+	&.active > a,
+	> a:hover {
+		color: white;
+	}
+
+	&:not(.active) > a {
+		color: $discourse-text-color;
+	}
+}
+
+.quick-links.nav-pills {
+	$bar-padding-v: 2px;
+	$link-margin-bottom: 8px;
+	$border-width: 1px;
+	$border-bottom-width: 3px;
+	$button-height: 36px;
+
+	display: flex;
+	justify-content: space-between;
+	margin: 0;
+	font-size: 0.9em;
+
+	// Accommodate shadow and border on links
+	padding-top: $bar-padding-v;
+	height: $button-height + 2 * $bar-padding-v + $border-width + $border-bottom-width;
+	flex-wrap: wrap;
+	overflow: hidden;
+
+	// Two rows on small screens, center links for less awkward spacing
+	@media screen and (max-width: map-get($breakpoints, quick-links-two-lines) - 1) {
+		justify-content: center;
+		height: 2 * $button-height + $link-margin-bottom + 2 * $bar-padding-v + $border-width + $border-bottom-width;
+	}
+
+	// Remove a clearfix that messes up space-between justification
+	&::after,
+	&::before {
+		display: none;
+	}
+
+	> li {
+		flex: 0 0 auto;
+		float: none;
+		margin: 0 2px;
+
+		> a {
+			$padding-v: 8px;
+
+			border: $border-width solid transparent;
+			border-bottom: $border-bottom-width solid transparent;
+			box-shadow: 0 1px 2px rgba(black, 0.2);
+			transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+			padding-top: $padding-v - $border-width;
+			padding-bottom: $padding-v - $border-bottom-width;
+			margin-bottom: $link-margin-bottom;
+		}
+
+		&:not(.active) > a {
+			@include apply($quick-link);
+		}
+	}
+}
+
+.nav-pills > li:not(.active) > a:hover {
+	// Discourse uses a lightened color by default
+	background-color: $discourse-navigation-color;
+}
+
+// Toolbar for category navigation, new topic, latest/new/unread
+.list-controls {
+	@extend .ribbon-dark;
+
+	padding: 0;
+
+	// Not sure what the intent was for these, left here just in case
+	position: relative;
+	z-index: 2;
+
+	.navigation-container {
+		padding: 8px 0;
+		// Clear floats inside the container
+		&::after {
+			display: block;
+			clear: both;
+			content: '';
+		}
+		// Some buttons and links have bottom margins
+		.btn,
+		.nav {
+			margin-bottom: 0;
+		}
+	}
+	// Fix some negative margins
+	.container {
+		margin: 0;
+	}
+
+	.desktop-view & {
+		.nav-pills > li {
+			&.active > a,
+			> a:hover {
+				color: mix(black, $smartthings-primary, 95%);
+			}
+
+			&:not(.active) > a {
+				color: mix(white, $smartthings-primary, 95%);
+
+				&:hover {
+					// Discourse uses a lightened color
+					background-color: $discourse-navigation-color;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 480px) {
+	#top-navbar-links a::after {
+		content: attr(title);
+		padding-left: 4px;
+	}
+}
