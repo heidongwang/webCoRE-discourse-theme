@@ -18,19 +18,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-@import "variables";
-@import "mixins/badge";
+@import 'variables';
+@import 'mixins/badge';
 
 // Username line badge styling; keys do not need to match a user group name and
 // must be explicitly mapped to one or more groups below
 $badges: (
 	verification-warning: (
 		background-color: #f00,
-		content: "WARNING - No Response to Verification Requests!!!",
+		content: 'WARNING - No Response to Verification Requests!!!',
 	),
 	awaiting-verification: (
 		background-color: #f90,
-		content: "ST Username Awaiting Verification",
+		content: 'ST Username Awaiting Verification',
 	),
 	minion: (
 		background-color: rgba(contrast-switch($discourse-bg-color, white, #fed55d), 0.2),
@@ -38,18 +38,18 @@ $badges: (
 		background-position: center,
 		background-repeat: no-repeat,
 		background-size: contain,
-		content: " ",
+		content: ' ',
 		width: 104px,
 		height: 24px,
 		vertical-align: middle,
 	),
 	new-user: (
 		background-color: #f00,
-		content: "User Verification Not Started",
+		content: 'User Verification Not Started',
 	),
 	st-staff: (
 		background-color: #00a0dc,
-		content: "SmartThings Staff",
+		content: 'SmartThings Staff',
 	),
 );
 
@@ -100,7 +100,7 @@ $badges: (
 	}
 
 	// When a new post is added it is not yet associated with the correct groups
-	// so badges should be hidden. The post is "staged" for a brief moment until
+	// so badges should be hidden. The post is 'staged' for a brief moment until
 	// the server responds.
 	&.staged .username::after {
 		display: none !important;
