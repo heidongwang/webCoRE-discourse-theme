@@ -24,9 +24,13 @@
 	// Subtle shadow below navbar
 	box-shadow: 0 1px 1px rgba(black, 0.25) !important;
 
-	// Smaller nav icons
-	.d-header-icons .fa {
-		font-size: 1.3em;
+	// Consistent nav icon size and alignment
+	.d-header-icons .d-icon {
+		line-height: 32px;
+
+		&.fa {
+			 font-size: 22px;
+		}
 	}
 
 	.logo-small {

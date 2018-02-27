@@ -30,7 +30,7 @@ function headerIcons(helper) {
 				title: 'Donate',
 				href:'https://www.paypal.me/ady624',
 				target: '_blank',
-			}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon.smaller')),
+			}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon')),
 		]),
 
 		helper.h('li', [
@@ -38,7 +38,7 @@ function headerIcons(helper) {
 				title: 'Dashboard',
 				href:'https://dashboard.webcore.co/',
 				target: '_blank',
-			}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon.smaller')),
+			}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon')),
 		]),
 
 		helper.h('li', [
@@ -46,7 +46,7 @@ function headerIcons(helper) {
 				title: 'Documentation wiki',
 				href:'https://wiki.webcore.co/',
 				target: '_blank',
-			}, helper.h('i.fa.fa-book.home-button-icon.d-icon.smaller')),
+			}, helper.h('i.fa.fa-book.home-button-icon.d-icon')),
 		]),
 	];
 }
