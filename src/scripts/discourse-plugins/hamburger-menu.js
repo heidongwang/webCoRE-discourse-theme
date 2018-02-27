@@ -38,6 +38,11 @@ const menuFooterLinks = [
 		href: 'https://dashboard.webcore.co',
 		target: '_blank',
 	},
+	{
+		rawLabel: 'Facebook Group',
+		href: 'https://www.facebook.com/groups/1023785497757470/',
+		target: '_blank',
+	},
 ];
 
 api.decorateWidget('hamburger-menu:footerLinks', () => menuFooterLinks);

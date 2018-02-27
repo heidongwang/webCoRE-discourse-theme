@@ -48,6 +48,14 @@ function headerIcons(helper) {
 				target: '_blank',
 			}, helper.h('i.fa.fa-book.home-button-icon.d-icon')),
 		]),
+
+		helper.h('li', [
+			helper.h('a#facebook-button.icon.btn-flat', {
+				title: 'webCoRE Facebook Group',
+				href:'https://www.facebook.com/groups/1023785497757470/',
+				target: '_blank',
+			}, helper.h('i.fa.fa-facebook-square.home-button-icon.d-icon')),
+		]),
 	];
 }
 
