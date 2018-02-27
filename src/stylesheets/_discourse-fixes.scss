@@ -43,3 +43,10 @@
 #banner {
 	margin-top: 10px;
 }
+
+li.messages-menu {
+	// Fix a glitch on macOS Safari where the messages menu affects the layout
+	// of all other nav icons. This is an invisible container element so does
+	// not affect the sizing of the messages dropdown.
+	width: 0;
+}
