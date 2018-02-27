@@ -318,6 +318,11 @@
 			href: 'https://dashboard.webcore.co',
 			target: '_blank',
 		},
+		{
+			rawLabel: 'Facebook Group',
+			href: 'https://www.facebook.com/groups/1023785497757470/',
+			target: '_blank',
+		},
 	];
 	
 	api.decorateWidget('hamburger-menu:footerLinks', () => menuFooterLinks);
@@ -328,7 +333,7 @@
 					title: 'Donate',
 					href:'https://www.paypal.me/ady624',
 					target: '_blank',
-				}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon.smaller')),
+				}, helper.h('i.fa.fa-paypal.home-button-icon.d-icon')),
 			]),
 	
 			helper.h('li', [
@@ -336,7 +341,7 @@
 					title: 'Dashboard',
 					href:'https://dashboard.webcore.co/',
 					target: '_blank',
-				}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon.smaller')),
+				}, helper.h('i.fa.fa-dashboard.home-button-icon.d-icon')),
 			]),
 	
 			helper.h('li', [
@@ -344,7 +349,15 @@
 					title: 'Documentation wiki',
 					href:'https://wiki.webcore.co/',
 					target: '_blank',
-				}, helper.h('i.fa.fa-book.home-button-icon.d-icon.smaller')),
+				}, helper.h('i.fa.fa-book.home-button-icon.d-icon')),
+			]),
+	
+			helper.h('li', [
+				helper.h('a#facebook-button.icon.btn-flat', {
+					title: 'webCoRE Facebook Group',
+					href:'https://www.facebook.com/groups/1023785497757470/',
+					target: '_blank',
+				}, helper.h('i.fa.fa-facebook-square.home-button-icon.d-icon')),
 			]),
 		];
 	}
