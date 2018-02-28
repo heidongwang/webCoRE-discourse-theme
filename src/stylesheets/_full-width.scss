@@ -38,11 +38,3 @@
 		padding-right: 0;
 	}
 }
-
-// Match white page navigation bar indentation to the dark topic bar
-.body-page,
-.full-width {
-	> .nav-pills:first-child {
-		padding: 8px;
-	}
-}

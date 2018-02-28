@@ -74,3 +74,32 @@
 	padding-top: 63px;
 	margin-top: 0;
 }
+
+// Spacing between white background top navigation and the main content
+%too-close-to-navbar {
+	margin-top: 13px;
+}
+
+section.user-main,
+.top-lists {
+	@extend %too-close-to-navbar;
+}
+
+.full-width,
+.body-page {
+	&,
+	& > div[itemscope] {
+		> .nav-pills {
+			@extend %too-close-to-navbar;
+
+			// Match white page navigation bar indentation to the dark topic bar
+			padding: 8px;
+		}
+	}
+}
+
+// Padding around the search
+.search-container {
+	padding-top: 13px;
+	padding-bottom: 13px;
+}
