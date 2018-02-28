@@ -554,7 +554,8 @@ li.messages-menu {
 	padding-top: 63px;
 
 	/* Was applied to .wrap*/
-	.container {
+	.container,
+	.search-container {
 		max-width: 1110px;
 		margin: 0 auto;
 		padding-left: 16px;
@@ -566,13 +567,6 @@ li.messages-menu {
 		max-width: none;
 		padding-left: 0;
 		padding-right: 0;
-	}
-}
-/* Match white page navigation bar indentation to the dark topic bar*/
-.body-page,
-.full-width {
-	> .nav-pills:first-child {
-		padding: 8px;
 	}
 }
 #main .d-header {
@@ -627,6 +621,31 @@ li.messages-menu {
 #main-outlet {
 	padding-top: 63px;
 	margin-top: 0;
+}
+/* Spacing between white background top navigation and the main content*/
+%too-close-to-navbar {
+	margin-top: 13px;
+}
+section.user-main,
+.top-lists {
+	@extend %too-close-to-navbar;
+}
+.full-width,
+.body-page {
+	&,
+	& > div[itemscope] {
+		> .nav-pills {
+			@extend %too-close-to-navbar;
+
+			/* Match white page navigation bar indentation to the dark topic bar*/
+			padding: 8px;
+		}
+	}
+}
+/* Padding around the search*/
+.search-container {
+	padding-top: 13px;
+	padding-bottom: 13px;
 }
 .welcome-message {
 	.greeting {
