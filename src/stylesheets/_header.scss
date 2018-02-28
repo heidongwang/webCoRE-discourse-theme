@@ -74,6 +74,11 @@
 	}
 }
 
+// Override header-search plugin to ensure search button is visible
+.header-search-enabled #search-button {
+	display: block;
+}
+
 // Align topic navigation directly below the header
 #main-outlet {
 	padding-top: 63px;
