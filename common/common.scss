@@ -155,7 +155,7 @@ $breakpoints: (
 	badges-below-username: 570px,
 );
 /* Discourse theme upload variables do not work with child themes*/
-$logotype-image: contrast-switch(
+$wordmark-image: contrast-switch(
 	$discourse-bg-color,
 	$if-dark: 'https://community.webcore.co/uploads/default/original/2X/2/2382a051335d7fb65d7843e0f8d3edac0d427d96.svg',
 	$if-light: 'https://community.webcore.co/uploads/default/original/2X/d/d82aa5d0f719318d1f35bafdec06e2c8cf3c54be.svg'
@@ -582,38 +582,33 @@ li.messages-menu {
 		}
 	}
 
-	.logo-small {
-		width: 33px;
+	/* Space between sign up and toggle greeting button*/
+	.sign-up-button {
+		margin-left: 7px;
 	}
 
-	/* Replace the header search UI with the webCoRE logotype*/
 	.title {
-		/* Logo icon*/
 		a {
-			background: url($logomark-image) center no-repeat;
-			background-size: contain;
+			$logomark-size: 38px;
+			$wordmark-width: 150px;
 
-			img {
-				opacity: 0;
+			img.logo-big {
+				background-image: url($logomark-image), url($wordmark-image);
+				background-position: left center, right center;
+				background-repeat: no-repeat;
+				background-size: $logomark-size, $wordmark-width;
+				width: $logomark-size + $wordmark-width + 5;
+				height: $logomark-size;
 			}
-		}
 
-		/* Logo text*/
-		.header-search {
+			.logo-small {
+				background: url($logomark-image) left center no-repeat;
+				background-size: $logomark-size;
+				width: $logomark-size;
+				height: $logomark-size;
+			}
+
 			margin-left: 8px;
-
-			&::before {
-				display: block;
-				content: ' ';
-				background: url($logotype-image) center no-repeat;
-				background-size: contain;
-				width: 144px;
-				height: 26px;
-			}
-
-			> * {
-				display: none !important;
-			}
 		}
 	}
 }
