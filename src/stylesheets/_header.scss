@@ -52,7 +52,10 @@
 				height: $logomark-size;
 			}
 
-			.logo-small {
+			// Style the big logo to match the small logo on mobile
+			@at-root
+				.mobile-view & img.logo-big,
+				& img.logo-small {
 				background: url($logomark-image) left center no-repeat;
 				background-size: $logomark-size;
 				width: $logomark-size;
