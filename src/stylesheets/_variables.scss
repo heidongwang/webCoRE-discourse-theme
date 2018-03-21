@@ -151,7 +151,7 @@ $breakpoints: (
 );
 
 // Discourse theme upload variables do not work with child themes
-$logotype-image: contrast-switch(
+$wordmark-image: contrast-switch(
 	$discourse-bg-color,
 	$if-dark: 'https://community.webcore.co/uploads/default/original/2X/2/2382a051335d7fb65d7843e0f8d3edac0d427d96.svg',
 	$if-light: 'https://community.webcore.co/uploads/default/original/2X/d/d82aa5d0f719318d1f35bafdec06e2c8cf3c54be.svg'
